@@ -45,54 +45,54 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - Use UUID4 for IDs, enforce text max 5000 chars, keywords in lowercase
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 6.3, 6.4, 7.1, 7.4_
 
-  - [ ]* 2.3 Write property test for feedback text persistence round-trip
+  - [x] 2.3 Write property test for feedback text persistence round-trip
     - **Property 12: Feedback text persistence round-trip**
     - **Validates: Requirements 5.1, 5.4**
 
-  - [ ]* 2.4 Write property test for batch history ordering
+  - [ ] 2.4 Write property test for batch history ordering
     - **Property 13: Batch history ordering**
     - **Validates: Requirements 5.6**
 
-  - [ ]* 2.5 Write property test for keyword filtering with pagination
+  - [ ] 2.5 Write property test for keyword filtering with pagination
     - **Property 14: Keyword filtering with pagination**
     - **Validates: Requirements 6.3**
 
-  - [ ]* 2.6 Write property test for top-N keyword selection
+  - [ ] 2.6 Write property test for top-N keyword selection
     - **Property 15: Top-N keyword selection**
     - **Validates: Requirements 6.4**
 
-  - [ ]* 2.7 Write property test for urgency classification and triage ordering
+  - [ ] 2.7 Write property test for urgency classification and triage ordering
     - **Property 16: Urgency classification and triage ordering**
     - **Validates: Requirements 7.1, 7.4**
 
-- [ ] 3. Implement authentication module
-  - [~] 3.1 Implement LocalAuthProvider
+- [x] 3. Implement authentication module
+  - [x] 3.1 Implement LocalAuthProvider
     - Create `backend/app/infrastructure/auth/local_auth_provider.py` implementing `IAuthProvider`
     - Implement `hash_password` with bcrypt, `verify_password`, `authenticate` (with lockout logic: 5 attempts → 15 min lock), `validate_token` with PyJWT (30 min expiry)
     - Ensure error messages are generic (not revealing which field is wrong)
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.6_
 
-  - [ ]* 3.2 Write property test for password hashing round-trip
+  - [x] 3.2 Write property test for password hashing round-trip
     - **Property 1: Password hashing round-trip**
     - **Validates: Requirements 1.4**
 
-  - [ ]* 3.3 Write property test for token validity window
+  - [ ] 3.3 Write property test for token validity window
     - **Property 2: Token validity window**
     - **Validates: Requirements 1.1, 1.3**
 
-  - [ ]* 3.4 Write property test for generic error message on invalid credentials
+  - [ ] 3.4 Write property test for generic error message on invalid credentials
     - **Property 3: Generic error message on invalid credentials**
     - **Validates: Requirements 1.2**
 
-  - [ ]* 3.5 Write property test for account lockout at threshold
+  - [ ] 3.5 Write property test for account lockout at threshold
     - **Property 4: Account lockout at threshold**
     - **Validates: Requirements 1.6**
 
-- [~] 4. Checkpoint - Ensure storage and auth tests pass
+- [ ] 4. Checkpoint - Ensure storage and auth tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 5. Implement CSV validator
-  - [~] 5.1 Implement CSV validation logic
+  - [ ] 5.1 Implement CSV validation logic
     - Create `backend/app/utils/csv_parser.py` with `validate_csv` function
     - Implement validation: extension check (.csv), encoding detection (UTF-8/Latin-1), column detection (set: "texto", "comentario", "review", "comment", "feedback"), size limit (10 MB), row limit (50,000)
     - Return `CSVValidationResult` dataclass with detected column name or specific error reason
@@ -107,7 +107,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Validates: Requirements 2.3, 2.4**
 
 - [ ] 6. Implement NLP engine
-  - [~] 6.1 Implement SpaCyNLPProvider
+  - [ ] 6.1 Implement SpaCyNLPProvider
     - Create `backend/app/infrastructure/nlp/spacy_nlp_provider.py` implementing `INLPProvider`
     - Implement `validate_text`: check empty text, < 2 significant words, non-Spanish language detection
     - Implement `analyze_sentiment`: classify as positivo/neutro/negativo with score [-1.0, 1.0], enforce score-classification consistency (positivo > 0.2, negativo < -0.2, neutro -0.2 to 0.2)
@@ -132,7 +132,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Validates: Requirements 4.1, 4.2, 4.4**
 
 - [ ] 7. Implement batch processing service
-  - [~] 7.1 Implement BatchService orchestrator
+  - [ ] 7.1 Implement BatchService orchestrator
     - Create `backend/app/core/services/batch_service.py` with `BatchService` class
     - Implement CSV upload flow: validate → create batch → parse rows → process each via NLP → store results → update batch status
     - Handle partial failures: mark individual feedbacks as error, continue processing, update `error_rows` count
@@ -144,14 +144,14 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Validates: Requirements 2.7**
 
 - [ ] 8. Implement API layer (FastAPI routes)
-  - [~] 8.1 Implement auth endpoints
+  - [ ] 8.1 Implement auth endpoints
     - Create `backend/app/api/routes/auth.py` with `POST /api/v1/auth/login` and `POST /api/v1/auth/register`
     - Implement JWT middleware in `backend/app/api/middleware/auth_middleware.py`
     - Return appropriate error codes: 401 for invalid credentials, 423 for locked account
     - Show `company_name` in login response
     - _Requirements: 1.1, 1.2, 1.5, 1.6_
 
-  - [~] 8.2 Implement batch endpoints
+  - [ ] 8.2 Implement batch endpoints
     - Create `backend/app/api/routes/batches.py` with all batch-related endpoints
     - `POST /api/v1/batches/upload`: accept multipart file, validate, return 202 + batch_id
     - `GET /api/v1/batches`: paginated user batch history
@@ -162,7 +162,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - `GET /api/v1/batches/{id}/triage`: urgent feedbacks (score < -0.7)
     - _Requirements: 2.1, 2.3, 2.4, 2.6, 5.6, 6.1, 6.3, 6.4, 7.1, 7.4_
 
-  - [~] 8.3 Set up dependency injection and app wiring
+  - [ ] 8.3 Set up dependency injection and app wiring
     - Create `backend/app/dependencies.py` with FastAPI dependency injection
     - Wire `INLPProvider` → `SpaCyNLPProvider`, `IAuthProvider` → `LocalAuthProvider`, `IStorageProvider` → `SQLiteStorageProvider`
     - Configure CORS middleware for frontend access
@@ -175,25 +175,25 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - Test pagination and filtering on dashboard endpoints
     - _Requirements: 1.1, 1.2, 2.3, 6.3, 7.4_
 
-- [~] 9. Checkpoint - Ensure backend tests pass end-to-end
+- [ ] 9. Checkpoint - Ensure backend tests pass end-to-end
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. Implement frontend - Auth and Upload components
-  - [~] 10.1 Set up React project with Vite and dependencies
+  - [ ] 10.1 Set up React project with Vite and dependencies
     - Initialize frontend project with Vite + React + TypeScript
     - Install dependencies: react-router-dom, axios, chart.js, react-chartjs-2, react-wordcloud, @testing-library/react
     - Create `frontend/src/types/` with TypeScript interfaces matching backend schemas
     - Create `frontend/src/services/api.ts` with Axios instance and interceptors (JWT token, error handling)
     - _Requirements: 8.4_
 
-  - [~] 10.2 Implement Auth components
+  - [ ] 10.2 Implement Auth components
     - Create `frontend/src/components/Auth/LoginForm.tsx` with email/password form
     - Handle error states: invalid credentials (generic message), account locked (show lockout message)
     - Store JWT token in localStorage, display company name on success
     - Implement route protection (redirect to login if no valid token)
     - _Requirements: 1.1, 1.2, 1.5, 1.6_
 
-  - [~] 10.3 Implement CSV Upload component
+  - [ ] 10.3 Implement CSV Upload component
     - Create `frontend/src/components/Upload/CSVUploader.tsx` with drag & drop file selection
     - Implement client-side validation (extension, size preview)
     - Show upload progress and poll `GET /batches/{id}/status` for processing state
@@ -201,20 +201,20 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - _Requirements: 2.1, 2.3, 2.4, 2.6_
 
 - [ ] 11. Implement frontend - Dashboard and visualization
-  - [~] 11.1 Implement sentiment charts
+  - [ ] 11.1 Implement sentiment charts
     - Create `frontend/src/components/Charts/SentimentCharts.tsx` with Chart.js bar chart and pie chart
     - Bar chart: sentiment distribution (positivo/neutro/negativo counts)
     - Pie chart: percentage distribution with hover tooltip showing exact values
     - Both charts support click events to filter feedbacks by sentiment category
     - _Requirements: 6.1, 6.2_
 
-  - [~] 11.2 Implement word cloud and feedback list
+  - [ ] 11.2 Implement word cloud and feedback list
     - Create `frontend/src/components/Charts/WordCloud.tsx` with top 20 keywords, size proportional to frequency
     - Create `frontend/src/components/Dashboard/FeedbackList.tsx` with paginated list (20 per page)
     - Implement keyword click → filter feedbacks by that keyword
     - _Requirements: 6.3, 6.4_
 
-  - [~] 11.3 Implement Triage panel
+  - [ ] 11.3 Implement Triage panel
     - Create `frontend/src/components/Triage/TriagePanel.tsx` showing urgent feedbacks (score < -0.7)
     - Display as accessible tab/panel with badge showing urgent count
     - Order by score ascending (most negative first), paginate at 10 per page
@@ -222,20 +222,20 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - Add red alert indicator next to batch name when urgents exist
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
 
-  - [~] 11.4 Implement batch history and empty states
+  - [ ] 11.4 Implement batch history and empty states
     - Create `frontend/src/components/Dashboard/BatchHistory.tsx` with paginated list ordered by date desc
     - Create `frontend/src/components/Dashboard/EmptyState.tsx` reusable component
     - Implement empty states: no feedbacks processed → show message + CTA to upload; no urgent feedbacks → show calm message
     - Wire navigation: batch selection loads results within 3s target
     - _Requirements: 5.6, 6.5, 6.6, 7.6_
 
-  - [~] 11.5 Wire App routing and main layout
+  - [ ] 11.5 Wire App routing and main layout
     - Create `frontend/src/App.tsx` with React Router: `/login`, `/dashboard`, `/upload`
     - Implement main layout with navigation bar showing triage badge
     - Connect all components with API service layer
     - _Requirements: 6.1, 7.2_
 
-- [~] 12. Final checkpoint - Ensure all tests pass
+- [ ] 12. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
