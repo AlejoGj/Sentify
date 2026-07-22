@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     # JWT Authentication - MUST be set via SENTIFY_JWT_SECRET_KEY env var
     jwt_secret_key: str = os.getenv("SENTIFY_JWT_SECRET_KEY", "CHANGE_ME")
     jwt_algorithm: str = "HS256"
-    jwt_access_token_expire_minutes: int = 60
+    jwt_access_token_expire_minutes: int = 30
 
     # Auth
     max_login_attempts: int = 5
