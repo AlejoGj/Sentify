@@ -76,11 +76,11 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Property 1: Password hashing round-trip**
     - **Validates: Requirements 1.4**
 
-  - [ ] 3.3 Write property test for token validity window
+  - [x] 3.3 Write property test for token validity window
     - **Property 2: Token validity window**
     - **Validates: Requirements 1.1, 1.3**
 
-  - [ ] 3.4 Write property test for generic error message on invalid credentials
+  - [x] 3.4 Write property test for generic error message on invalid credentials
     - **Property 3: Generic error message on invalid credentials**
     - **Validates: Requirements 1.2**
 
