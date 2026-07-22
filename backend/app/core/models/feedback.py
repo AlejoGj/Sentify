@@ -5,7 +5,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, Float, ForeignKey, String
+from sqlalchemy import DateTime, Float, ForeignKey, Index, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
@@ -15,6 +15,11 @@ class Feedback(Base):
     """Represents an individual customer feedback/review within a batch."""
 
     __tablename__ = "feedbacks"
+    __table_args__ = (
+        Index("idx_feedbacks_batch_id", "batch_id"),
+        Index("idx_feedbacks_score", "score"),
+        Index("idx_feedbacks_sentiment", "sentiment"),
+    )
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
