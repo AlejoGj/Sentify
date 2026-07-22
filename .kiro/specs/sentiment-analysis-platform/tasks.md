@@ -32,14 +32,14 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - Configure pytest in `pyproject.toml` with hypothesis settings (min 100 examples)
     - _Requirements: 8.5_
 
-- [ ] 2. Implement storage layer (SQLite + SQLAlchemy)
+- [x] 2. Implement storage layer (SQLite + SQLAlchemy)
   - [x] 2.1 Implement database setup and SQLAlchemy models
     - Create `backend/app/infrastructure/storage/database.py` with SQLAlchemy engine, session factory, and Base
     - Define SQL tables matching the ER diagram: `users`, `batches`, `feedbacks`, `keywords`
     - Add all indexes defined in the design (idx_batches_user_id, idx_feedbacks_batch_id, idx_feedbacks_score, idx_keywords_word, etc.)
     - _Requirements: 5.1, 5.2, 5.3, 5.4_
 
-  - [~] 2.2 Implement SQLiteStorageProvider
+  - [x] 2.2 Implement SQLiteStorageProvider
     - Create `backend/app/infrastructure/storage/sqlite_storage_provider.py` implementing `IStorageProvider`
     - Implement all methods: `create_batch`, `update_batch_status`, `store_feedback`, `get_batch_summary`, `get_feedbacks_by_keyword`, `get_top_keywords`, `get_urgent_feedbacks`, `get_user_batches`, `create_user`, `get_user_by_email`, `increment_failed_attempts`, `reset_failed_attempts`, `lock_account`
     - Use UUID4 for IDs, enforce text max 5000 chars, keywords in lowercase
