@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Pre-Task Architecture Alignment",
+  "description": "Before starting a spec task, reviews the task requirements and related design constraints to ensure the implementation plan is aligned with the architecture (interface-driven, layered, modular). Reminds of relevant correctness properties that must hold.",
+  "version": "1",
+  "when": {
+    "type": "preTaskExecution"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Before starting this task, briefly review: 1) Which abstract interface(s) does this task implement or consume? Confirm you'll code against the ABC, not concrete classes. 2) Which correctness properties (from the design doc) apply? Keep them in mind during implementation. 3) Does this task have dependencies on other tasks that must be completed first? 4) Are there specific error handling patterns from the design that apply? Summarize the key constraints in 2-3 bullet points, then proceed with implementation."
+  }
+}

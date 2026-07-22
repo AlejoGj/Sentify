@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Authentication Security Review",
+  "description": "When auth-related files are edited, verifies security best practices: proper password hashing (bcrypt), JWT token expiration, generic error messages for auth failures, rate limiting awareness, and no credential leakage in responses or logs.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*auth*.py",
+      "*auth*.ts",
+      "*auth*.tsx",
+      "*middleware*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review this authentication-related file for: 1) Passwords stored or compared in plain text (must use bcrypt). 2) JWT tokens without expiration or with excessively long expiry (max 30 min per spec). 3) Error messages that reveal whether email or password is wrong (must be generic). 4) Tokens or passwords logged or included in API responses beyond what's needed. 5) Missing account lockout logic after failed attempts. 6) Timing attacks (use constant-time comparison for secrets). Flag issues concisely. If the code follows security best practices, confirm silently."
+  }
+}

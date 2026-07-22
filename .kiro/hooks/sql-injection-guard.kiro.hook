@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "SQL Injection & DB Security Review",
+  "description": "When SQL-related files, ORM models, or storage providers are edited, checks for SQL injection vulnerabilities, missing parameterized queries, unsafe string interpolation in queries, and proper input validation before database operations.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*storage*.py",
+      "*database*.py",
+      "*models*.py",
+      "*migration*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review this database-related file for: 1) Raw SQL strings with f-string or .format() interpolation (must use parameterized queries). 2) Missing input validation or sanitization before database operations. 3) Queries that could return unbounded results without pagination/limits. 4) Missing error handling around database operations. 5) SQLAlchemy anti-patterns (e.g., using raw text() without bound parameters). Flag vulnerabilities concisely. If the code is secure, confirm silently."
+  }
+}

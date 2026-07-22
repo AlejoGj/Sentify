@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "Code Quality & Architecture Review",
+  "description": "After writing Python or TypeScript files, reviews the code for quality, adherence to project conventions (type hints, ABC interfaces, no cross-imports between infrastructure modules), potential bugs, and suggests optimizations. Verifies layered architecture compliance.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*.py",
+      "*.ts",
+      "*.tsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the edited file for: 1) Python: missing type hints, missing docstrings on public methods, unused imports, code that violates the layered architecture (e.g., infrastructure importing from another infrastructure module, routes containing business logic). 2) TypeScript: missing type annotations, any usage, unhandled promise rejections. 3) Both: overly complex functions (>30 lines), duplicated logic, potential performance issues, magic numbers without constants. Provide brief actionable feedback only if issues are found. Do NOT rewrite the file — just flag problems concisely."
+  }
+}

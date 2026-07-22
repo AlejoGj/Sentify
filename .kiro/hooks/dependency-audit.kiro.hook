@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Dependency Security Audit",
+  "description": "When new Python dependency files are created or modified, checks for known vulnerable package versions, typosquatting risks, and ensures dependencies use pinned versions rather than open ranges.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*requirements*.txt",
+      "pyproject.toml",
+      "package.json",
+      "package-lock.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the modified dependency file for: 1) Packages with unpinned or overly broad version ranges (prefer exact pins like ==1.2.3 for Python or exact versions for npm). 2) Suspicious package names that could be typosquatting (e.g., 'fatsapi' instead of 'fastapi', 'reqeusts' instead of 'requests'). 3) Known deprecated or abandoned packages. 4) Unnecessary dependencies that duplicate functionality already provided by existing packages. Flag any concerns briefly. If everything looks correct, confirm silently."
+  }
+}

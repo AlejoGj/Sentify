@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Git Commit & Push Safety Guard",
+  "description": "Before any shell command that involves git commit or git push, verifies the commit message follows conventional commits format, checks that no sensitive files (.env, credentials, private keys) are staged, and confirms the branch is not main/master for direct pushes.",
+  "version": "1",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": [
+      "shell"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Before executing this git command, verify: 1) If it's a commit: check that the commit message follows Conventional Commits format (feat:, fix:, docs:, refactor:, test:, chore:). 2) If staged files include .env, *.pem, *.key, credentials.*, secrets.*, or database files (*.db, *.sqlite), BLOCK the operation and warn the user. 3) If it's a push to main or master branch, warn the user and suggest creating a feature branch instead. 4) Verify no --force flag is used without explicit user request. If all checks pass, proceed normally."
+  }
+}
