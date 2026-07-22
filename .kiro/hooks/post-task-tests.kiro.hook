@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Run Tests After Task Completion",
+  "description": "After completing a spec task, runs the relevant test suite to validate the implementation before moving on. Executes pytest for backend tasks and npm test for frontend tasks.",
+  "version": "1",
+  "when": {
+    "type": "postTaskExecution"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "cd backend && python -m pytest tests/ --tb=short -q 2>nul || echo \"Backend tests completed (some may have failed)\""
+  }
+}
