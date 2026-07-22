@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import uuid
 
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import ForeignKey, Index, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
@@ -14,6 +14,10 @@ class Keyword(Base):
     """Represents a keyword extracted from a feedback text."""
 
     __tablename__ = "keywords"
+    __table_args__ = (
+        Index("idx_keywords_word", "word"),
+        Index("idx_keywords_feedback_id", "feedback_id"),
+    )
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())

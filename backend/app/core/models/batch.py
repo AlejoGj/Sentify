@@ -5,7 +5,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String
+from sqlalchemy import DateTime, ForeignKey, Index, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
@@ -15,6 +15,10 @@ class Batch(Base):
     """Represents a CSV upload batch (Lote_Analisis) for sentiment analysis."""
 
     __tablename__ = "batches"
+    __table_args__ = (
+        Index("idx_batches_user_id", "user_id"),
+        Index("idx_batches_status", "status"),
+    )
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())

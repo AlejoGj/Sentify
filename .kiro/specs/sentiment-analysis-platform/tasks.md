@@ -33,7 +33,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - _Requirements: 8.5_
 
 - [ ] 2. Implement storage layer (SQLite + SQLAlchemy)
-  - [~] 2.1 Implement database setup and SQLAlchemy models
+  - [x] 2.1 Implement database setup and SQLAlchemy models
     - Create `backend/app/infrastructure/storage/database.py` with SQLAlchemy engine, session factory, and Base
     - Define SQL tables matching the ER diagram: `users`, `batches`, `feedbacks`, `keywords`
     - Add all indexes defined in the design (idx_batches_user_id, idx_feedbacks_batch_id, idx_feedbacks_score, idx_keywords_word, etc.)
