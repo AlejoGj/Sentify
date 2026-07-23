@@ -380,4 +380,28 @@ def mock_storage_provider():
             if user_id in self._users:
                 self._users[user_id]["locked_until"] = until
 
+        def update_batch_counts(
+            self, batch_id: str, total_rows: int, processed_rows: int, error_rows: int
+        ) -> None:
+            if batch_id in self._batches:
+                self._batches[batch_id]["total_rows"] = total_rows
+                self._batches[batch_id]["processed_count"] = processed_rows
+                self._batches[batch_id]["error_count"] = error_rows
+
+        def store_feedback_error(
+            self, batch_id: str, text: str, error_reason: str
+        ) -> str:
+            feedback_id = self._next_id()
+            self._feedbacks[feedback_id] = {
+                "id": feedback_id,
+                "batch_id": batch_id,
+                "text": text,
+                "sentiment": None,
+                "score": None,
+                "keywords": [],
+                "status": "error",
+                "error_reason": error_reason,
+            }
+            return feedback_id
+
     return MockStorageProvider()

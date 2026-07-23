@@ -414,3 +414,53 @@ class SQLiteStorageProvider(IStorageProvider):
             raise
         finally:
             session.close()
+
+    def update_batch_counts(
+        self, batch_id: str, total_rows: int, processed_rows: int, error_rows: int
+    ) -> None:
+        """Actualiza los contadores de filas del lote."""
+        session: Session = self._session_factory()
+        try:
+            batch = session.query(Batch).filter(Batch.id == batch_id).first()
+            if batch is None:
+                logger.warning("Batch %s not found for update_batch_counts", batch_id)
+                return
+            batch.total_rows = total_rows
+            batch.processed_rows = processed_rows
+            batch.error_rows = error_rows
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            logger.error("Error updating batch counts: %s", e)
+            raise
+        finally:
+            session.close()
+
+    def store_feedback_error(
+        self, batch_id: str, text: str, error_reason: str
+    ) -> str:
+        """Almacena un feedback con error. Retorna feedback_id."""
+        session: Session = self._session_factory()
+        try:
+            feedback_id = str(uuid.uuid4())
+            truncated_text = text[:5000]
+
+            feedback = Feedback(
+                id=feedback_id,
+                batch_id=batch_id,
+                original_text=truncated_text,
+                sentiment=None,
+                score=None,
+                status="error",
+                error_reason=error_reason,
+                analyzed_at=datetime.utcnow(),
+            )
+            session.add(feedback)
+            session.commit()
+            return feedback_id
+        except Exception as e:
+            session.rollback()
+            logger.error("Error storing feedback error: %s", e)
+            raise
+        finally:
+            session.close()
