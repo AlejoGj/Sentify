@@ -84,7 +84,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Property 3: Generic error message on invalid credentials**
     - **Validates: Requirements 1.2**
 
-  - [ ] 3.5 Write property test for account lockout at threshold
+  - [x] 3.5 Write property test for account lockout at threshold
     - **Property 4: Account lockout at threshold**
     - **Validates: Requirements 1.6**
 
