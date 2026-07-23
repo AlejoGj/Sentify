@@ -91,18 +91,18 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
 - [x] 4. Checkpoint - Ensure storage and auth tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 5. Implement CSV validator
+- [x] 5. Implement CSV validator
   - [x] 5.1 Implement CSV validation logic
     - Create `backend/app/utils/csv_parser.py` with `validate_csv` function
     - Implement validation: extension check (.csv), encoding detection (UTF-8/Latin-1), column detection (set: "texto", "comentario", "review", "comment", "feedback"), size limit (10 MB), row limit (50,000)
     - Return `CSVValidationResult` dataclass with detected column name or specific error reason
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-  - [ ] 5.2 Write property test for CSV validation accepts recognized columns
+  - [x] 5.2 Write property test for CSV validation accepts recognized columns
     - **Property 5: CSV validation accepts recognized column names**
     - **Validates: Requirements 2.1, 2.2**
 
-  - [ ] 5.3 Write property test for CSV validation rejects invalid files
+  - [x] 5.3 Write property test for CSV validation rejects invalid files
     - **Property 6: CSV validation rejects invalid files with specific reason**
     - **Validates: Requirements 2.3, 2.4**
 
