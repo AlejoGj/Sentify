@@ -106,8 +106,8 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Property 6: CSV validation rejects invalid files with specific reason**
     - **Validates: Requirements 2.3, 2.4**
 
-- [ ] 6. Implement NLP engine
-  - [ ] 6.1 Implement SpaCyNLPProvider
+- [x] 6. Implement NLP engine
+  - [x] 6.1 Implement SpaCyNLPProvider
     - Create `backend/app/infrastructure/nlp/spacy_nlp_provider.py` implementing `INLPProvider`
     - Implement `validate_text`: check empty text, < 2 significant words, non-Spanish language detection
     - Implement `analyze_sentiment`: classify as positivo/neutro/negativo with score [-1.0, 1.0], enforce score-classification consistency (positivo > 0.2, negativo < -0.2, neutro -0.2 to 0.2)
