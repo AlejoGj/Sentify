@@ -432,3 +432,144 @@ class TestGenericErrorMessage:
 
         # Additionally verify it's the expected generic message
         assert result_wrong_email.error == "Credenciales inválidas"
+
+
+# ---------------------------------------------------------------------------
+# Property 4: Account lockout at threshold
+# ---------------------------------------------------------------------------
+
+
+class TestAccountLockoutAtThreshold:
+    """
+    Property 4: Account lockout at threshold
+
+    For any user account, after exactly 5 consecutive failed authentication
+    attempts, the account SHALL be locked, and any further authentication
+    attempt (even with correct credentials) within 15 minutes SHALL be
+    rejected with a lockout message.
+
+    Feature: sentiment-analysis-platform, Property 4: Account lockout at threshold
+
+    **Validates: Requirements 1.6**
+    """
+
+    KNOWN_EMAIL = "lockout-property4@empresa.com"
+    KNOWN_PASSWORD = "Secure-Password-99!"
+    KNOWN_COMPANY = "Empresa Lockout"
+
+    _cached_hash: str | None = None
+
+    @classmethod
+    def _get_password_hash(cls) -> str:
+        """Cache the bcrypt hash to avoid slow rehashing on every example."""
+        if cls._cached_hash is None:
+            provider = LocalAuthProvider(storage=None)  # type: ignore[arg-type]
+            cls._cached_hash = provider.hash_password(cls.KNOWN_PASSWORD)
+        return cls._cached_hash
+
+    def _setup_provider(self) -> tuple[LocalAuthProvider, _InMemoryStorageProvider]:
+        """Create a fresh provider with a registered user."""
+        storage = _InMemoryStorageProvider()
+        provider = LocalAuthProvider(storage)
+        password_hash = self._get_password_hash()
+        storage.create_user(self.KNOWN_EMAIL, password_hash, self.KNOWN_COMPANY)
+        return provider, storage
+
+    @given(wrong_password=wrong_passwords)
+    @settings(
+        max_examples=100,
+        suppress_health_check=[HealthCheck.function_scoped_fixture],
+        deadline=None,
+    )
+    def test_account_locks_after_5_failed_attempts(self, wrong_password: str):
+        """
+        After exactly 5 consecutive failed attempts, the account becomes locked
+        and returns account_locked=True with the lockout error message.
+
+        **Validates: Requirements 1.6**
+        """
+        assume(wrong_password != self.KNOWN_PASSWORD)
+
+        provider, _ = self._setup_provider()
+
+        # Perform 5 consecutive failed attempts
+        for i in range(5):
+            result = provider.authenticate(self.KNOWN_EMAIL, wrong_password)
+            if i < 4:
+                # First 4 attempts: account NOT locked yet
+                assert result.success is False
+                assert result.account_locked is False
+                assert result.error == LocalAuthProvider.GENERIC_ERROR
+            else:
+                # 5th attempt: account IS locked
+                assert result.success is False
+                assert result.account_locked is True
+                assert result.error == LocalAuthProvider.LOCKED_ERROR
+
+    @given(wrong_password=wrong_passwords, correct_after=st.booleans())
+    @settings(
+        max_examples=100,
+        suppress_health_check=[HealthCheck.function_scoped_fixture],
+        deadline=None,
+    )
+    def test_locked_account_rejects_correct_credentials(
+        self, wrong_password: str, correct_after: bool
+    ):
+        """
+        Once locked, even correct credentials are rejected with account_locked=True
+        and the lockout error message within the 15-minute window.
+
+        **Validates: Requirements 1.6**
+        """
+        assume(wrong_password != self.KNOWN_PASSWORD)
+
+        provider, _ = self._setup_provider()
+
+        # Lock the account with 5 failed attempts
+        for _ in range(5):
+            provider.authenticate(self.KNOWN_EMAIL, wrong_password)
+
+        # Now try with correct credentials — should still be rejected
+        result = provider.authenticate(self.KNOWN_EMAIL, self.KNOWN_PASSWORD)
+        assert result.success is False
+        assert result.account_locked is True
+        assert result.error == LocalAuthProvider.LOCKED_ERROR
+
+        # Also try with wrong credentials — should still be rejected
+        result_wrong = provider.authenticate(self.KNOWN_EMAIL, wrong_password)
+        assert result_wrong.success is False
+        assert result_wrong.account_locked is True
+        assert result_wrong.error == LocalAuthProvider.LOCKED_ERROR
+
+    @given(
+        wrong_password=wrong_passwords,
+        num_attempts=st.integers(min_value=1, max_value=4),
+    )
+    @settings(
+        max_examples=100,
+        suppress_health_check=[HealthCheck.function_scoped_fixture],
+        deadline=None,
+    )
+    def test_account_not_locked_before_threshold(
+        self, wrong_password: str, num_attempts: int
+    ):
+        """
+        Before reaching 5 failed attempts (1-4 failures), the account is NOT locked.
+
+        **Validates: Requirements 1.6**
+        """
+        assume(wrong_password != self.KNOWN_PASSWORD)
+
+        provider, _ = self._setup_provider()
+
+        # Perform fewer than 5 failed attempts
+        for _ in range(num_attempts):
+            result = provider.authenticate(self.KNOWN_EMAIL, wrong_password)
+            assert result.success is False
+            assert result.account_locked is False
+            assert result.error == LocalAuthProvider.GENERIC_ERROR
+
+        # After fewer than 5 failures, correct credentials should still work
+        result_correct = provider.authenticate(self.KNOWN_EMAIL, self.KNOWN_PASSWORD)
+        assert result_correct.success is True
+        assert result_correct.account_locked is False
