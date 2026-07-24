@@ -160,6 +160,49 @@ class SQLiteStorageProvider(IStorageProvider):
         finally:
             session.close()
 
+    def get_batch_feedbacks(
+        self, batch_id: str, page: int, page_size: int = 20
+    ) -> dict:
+        """Retorna todos los feedbacks exitosos de un lote, paginados."""
+        session: Session = self._session_factory()
+        try:
+            query = (
+                session.query(Feedback)
+                .filter(Feedback.batch_id == batch_id)
+                .filter(Feedback.status == "success")
+                .order_by(Feedback.analyzed_at.desc())
+            )
+
+            total = query.count()
+            offset = (page - 1) * page_size
+            feedbacks = query.offset(offset).limit(page_size).all()
+
+            items = []
+            for f in feedbacks:
+                items.append({
+                    "id": f.id,
+                    "original_text": f.original_text,
+                    "sentiment": f.sentiment,
+                    "score": f.score,
+                    "keywords": [kw.word for kw in f.keywords],
+                    "analyzed_at": f.analyzed_at.isoformat() if f.analyzed_at else None,
+                })
+
+            total_pages = math.ceil(total / page_size) if page_size > 0 else 0
+
+            return {
+                "items": items,
+                "total": total,
+                "page": page,
+                "page_size": page_size,
+                "total_pages": total_pages,
+            }
+        except Exception as e:
+            logger.error("Error getting batch feedbacks: %s", e)
+            raise
+        finally:
+            session.close()
+
     def get_feedbacks_by_keyword(
         self, batch_id: str, keyword: str, page: int, page_size: int = 20
     ) -> dict:

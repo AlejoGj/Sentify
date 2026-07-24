@@ -3,6 +3,7 @@
 from fastapi import FastAPI
 
 from app.api.routes.auth import router as auth_router
+from app.api.routes.batches import router as batches_router
 
 app = FastAPI(
     title="Sentify API",
@@ -14,6 +15,7 @@ api_v1_prefix = "/api/v1"
 
 # Register routers
 app.include_router(auth_router, prefix=api_v1_prefix)
+app.include_router(batches_router, prefix=api_v1_prefix)
 
 
 @app.get("/health")

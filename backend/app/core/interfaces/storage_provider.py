@@ -25,6 +25,12 @@ class IStorageProvider(ABC):
         ...
 
     @abstractmethod
+    def get_batch_feedbacks(self, batch_id: str, page: int,
+                            page_size: int = 20) -> dict:
+        """Retorna todos los feedbacks exitosos de un lote, paginados."""
+        ...
+
+    @abstractmethod
     def get_feedbacks_by_keyword(self, batch_id: str, keyword: str,
                                  page: int, page_size: int = 20) -> dict:
         """Retorna feedbacks asociados a una palabra clave, paginados."""
