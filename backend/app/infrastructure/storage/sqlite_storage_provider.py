@@ -317,13 +317,13 @@ class SQLiteStorageProvider(IStorageProvider):
     def get_user_batches(
         self, user_id: str, page: int, page_size: int = 10
     ) -> dict:
-        """Retorna historial de lotes del usuario, ordenados por fecha desc."""
+        """Retorna historial de lotes del usuario, ordenados por fecha de finalización desc."""
         session: Session = self._session_factory()
         try:
             query = (
                 session.query(Batch)
                 .filter(Batch.user_id == user_id)
-                .order_by(Batch.uploaded_at.desc())
+                .order_by(Batch.completed_at.desc())
             )
 
             total = query.count()

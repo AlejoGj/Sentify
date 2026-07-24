@@ -282,6 +282,23 @@ def mock_storage_provider():
                 ),
             }
 
+        def get_batch_feedbacks(
+            self, batch_id: str, page: int, page_size: int = 20
+        ) -> dict:
+            matching = [
+                f
+                for f in self._feedbacks.values()
+                if f["batch_id"] == batch_id
+            ]
+            start = (page - 1) * page_size
+            end = start + page_size
+            return {
+                "items": matching[start:end],
+                "total": len(matching),
+                "page": page,
+                "page_size": page_size,
+            }
+
         def get_feedbacks_by_keyword(
             self, batch_id: str, keyword: str, page: int, page_size: int = 20
         ) -> dict:
