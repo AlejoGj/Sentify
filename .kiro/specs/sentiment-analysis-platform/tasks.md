@@ -151,7 +151,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - Show `company_name` in login response
     - _Requirements: 1.1, 1.2, 1.5, 1.6_
 
-  - [ ] 8.2 Implement batch endpoints
+  - [x] 8.2 Implement batch endpoints
     - Create `backend/app/api/routes/batches.py` with all batch-related endpoints
     - `POST /api/v1/batches/upload`: accept multipart file, validate, return 202 + batch_id
     - `GET /api/v1/batches`: paginated user batch history
