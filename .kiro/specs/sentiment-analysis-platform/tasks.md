@@ -144,7 +144,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Validates: Requirements 2.7**
 
 - [ ] 8. Implement API layer (FastAPI routes)
-  - [ ] 8.1 Implement auth endpoints
+  - [x] 8.1 Implement auth endpoints
     - Create `backend/app/api/routes/auth.py` with `POST /api/v1/auth/login` and `POST /api/v1/auth/register`
     - Implement JWT middleware in `backend/app/api/middleware/auth_middleware.py`
     - Return appropriate error codes: 401 for invalid credentials, 423 for locked account
