@@ -131,8 +131,8 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Property 11: Keyword extraction invariants**
     - **Validates: Requirements 4.1, 4.2, 4.4**
 
-- [ ] 7. Implement batch processing service
-  - [ ] 7.1 Implement BatchService orchestrator
+- [x] 7. Implement batch processing service
+  - [x] 7.1 Implement BatchService orchestrator
     - Create `backend/app/core/services/batch_service.py` with `BatchService` class
     - Implement CSV upload flow: validate → create batch → parse rows → process each via NLP → store results → update batch status
     - Handle partial failures: mark individual feedbacks as error, continue processing, update `error_rows` count

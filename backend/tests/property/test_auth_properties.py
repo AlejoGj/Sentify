@@ -329,6 +329,16 @@ class _InMemoryStorageProvider(IStorageProvider):
     ) -> dict:
         return {}
 
+    def update_batch_counts(
+        self, batch_id: str, total_rows: int, processed_rows: int, error_rows: int
+    ) -> None:
+        pass
+
+    def store_feedback_error(
+        self, batch_id: str, text: str, error_reason: str
+    ) -> str:
+        return ""
+
 
 # ---------------------------------------------------------------------------
 # Strategies for Property 3

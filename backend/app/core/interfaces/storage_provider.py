@@ -72,3 +72,17 @@ class IStorageProvider(ABC):
     def lock_account(self, user_id: str, until: datetime) -> None:
         """Bloquea cuenta hasta la fecha indicada."""
         ...
+
+    @abstractmethod
+    def update_batch_counts(
+        self, batch_id: str, total_rows: int, processed_rows: int, error_rows: int
+    ) -> None:
+        """Actualiza los contadores de filas del lote."""
+        ...
+
+    @abstractmethod
+    def store_feedback_error(
+        self, batch_id: str, text: str, error_reason: str
+    ) -> str:
+        """Almacena un feedback con error. Retorna feedback_id."""
+        ...
