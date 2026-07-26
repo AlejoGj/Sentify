@@ -32,14 +32,14 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Test that missing AWS vars raise errors when `use_local_providers=False`
     - Test that local mode works without AWS vars
 
-- [ ] 2. Implement ComprehendNLPProvider
-  - [ ] 2.1 Create ComprehendNLPProvider class implementing INLPProvider
+- [x] 2. Implement ComprehendNLPProvider
+  - [x] 2.1 Create ComprehendNLPProvider class implementing INLPProvider
     - Create file `backend/app/infrastructure/nlp/comprehend_nlp_provider.py`
     - Implement `validate_text` with local validation: empty/whitespace → "texto_vacio", <2 significant words → "pocas_palabras", >5000 UTF-8 bytes → "texto_muy_largo"
     - Initialize boto3 comprehend client with configurable region
     - _Requirements: 1.1, 1.9, 1.10, 1.12_
 
-  - [ ] 2.2 Implement analyze_sentiment method
+  - [x] 2.2 Implement analyze_sentiment method
     - Call `comprehend.detect_sentiment(Text=text, LanguageCode="es")`
     - Compute polarity score: `round(max(-1.0, min(1.0, Positive - Negative)), 2)`
     - Classify: >0.2 → "positivo", <-0.2 → "negativo", else → "neutro"
@@ -47,7 +47,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Raise exception with AWS error code on service errors
     - _Requirements: 1.2, 1.3, 1.4, 1.5, 1.6, 1.11_
 
-  - [ ] 2.3 Implement extract_keywords method
+  - [x] 2.3 Implement extract_keywords method
     - Call `comprehend.detect_key_phrases(Text=text, LanguageCode="es")`
     - Filter phrases to >2 characters, sort by confidence descending, normalize to lowercase
     - Clamp max_keywords parameter to range 1-10
@@ -77,7 +77,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 4. Implement CognitoAuthProvider
-  - [ ] 4.1 Create CognitoAuthProvider class implementing IAuthProvider
+  - [-] 4.1 Create CognitoAuthProvider class implementing IAuthProvider
     - Create file `backend/app/infrastructure/auth/cognito_auth_provider.py`
     - Initialize boto3 cognito-idp client with configurable region, user_pool_id, client_id
     - Implement `hash_password` as no-op returning empty string
