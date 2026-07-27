@@ -49,7 +49,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Property 12: Feedback text persistence round-trip**
     - **Validates: Requirements 5.1, 5.4**
 
-  - [ ] 2.4 Write property test for batch history ordering
+  - [x] 2.4 Write property test for batch history ordering
     - **Property 13: Batch history ordering**
     - **Validates: Requirements 5.6**
 
@@ -143,7 +143,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - **Property 7: Partial row processing preserves valid rows**
     - **Validates: Requirements 2.7**
 
-- [ ] 8. Implement API layer (FastAPI routes)
+- [x] 8. Implement API layer (FastAPI routes)
   - [x] 8.1 Implement auth endpoints
     - Create `backend/app/api/routes/auth.py` with `POST /api/v1/auth/login` and `POST /api/v1/auth/register`
     - Implement JWT middleware in `backend/app/api/middleware/auth_middleware.py`
@@ -162,14 +162,14 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     - `GET /api/v1/batches/{id}/triage`: urgent feedbacks (score < -0.7)
     - _Requirements: 2.1, 2.3, 2.4, 2.6, 5.6, 6.1, 6.3, 6.4, 7.1, 7.4_
 
-  - [ ] 8.3 Set up dependency injection and app wiring
+  - [x] 8.3 Set up dependency injection and app wiring
     - Create `backend/app/dependencies.py` with FastAPI dependency injection
     - Wire `INLPProvider` → `SpaCyNLPProvider`, `IAuthProvider` → `LocalAuthProvider`, `IStorageProvider` → `SQLiteStorageProvider`
     - Configure CORS middleware for frontend access
     - Enable OpenAPI docs at `/docs`
     - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-  - [ ]* 8.4 Write unit tests for API endpoints
+  - [x] 8.4 Write unit tests for API endpoints
     - Test login success/failure responses, token validation
     - Test CSV upload validation errors (422), batch status transitions
     - Test pagination and filtering on dashboard endpoints
