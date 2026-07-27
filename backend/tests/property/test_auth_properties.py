@@ -311,6 +311,11 @@ class _InMemoryStorageProvider(IStorageProvider):
     def get_batch_summary(self, batch_id: str) -> dict:
         return {}
 
+    def get_batch_feedbacks(
+        self, batch_id: str, page: int, page_size: int = 20
+    ) -> dict:
+        return {}
+
     def get_feedbacks_by_keyword(
         self, batch_id: str, keyword: str, page: int, page_size: int = 20
     ) -> dict:

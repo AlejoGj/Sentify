@@ -73,18 +73,18 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - **Validates: Requirements 1.9, 1.10, 1.12, 2.5**
     - Generate edge-case strings with Hypothesis
 
-- [ ] 3. Checkpoint - Ensure all tests pass
+- [x] 3. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 4. Implement CognitoAuthProvider
-  - [-] 4.1 Create CognitoAuthProvider class implementing IAuthProvider
+  - [x] 4.1 Create CognitoAuthProvider class implementing IAuthProvider
     - Create file `backend/app/infrastructure/auth/cognito_auth_provider.py`
     - Initialize boto3 cognito-idp client with configurable region, user_pool_id, client_id
     - Implement `hash_password` as no-op returning empty string
     - Implement `verify_password` as no-op returning False
     - _Requirements: 10.1, 10.2, 3.1_
 
-  - [ ] 4.2 Implement register method
+  - [x] 4.2 Implement register method
     - Call `cognito.sign_up()` with email as username and company_name as custom attribute
     - Validate email (max 128 chars), password (8-128 chars), company_name (1-255 chars)
     - Handle UsernameExistsException, InvalidPasswordException, and service errors

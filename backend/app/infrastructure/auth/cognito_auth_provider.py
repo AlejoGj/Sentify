@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import boto3
+from botocore.exceptions import ClientError
 
 from app.core.interfaces.auth_provider import AuthResult, AuthToken, IAuthProvider
 
@@ -65,9 +66,56 @@ class CognitoAuthProvider(IAuthProvider):
     def register(self, email: str, password: str, company_name: str) -> AuthResult:
         """Register a new user in Cognito User Pool.
 
-        Implemented in task 4.2.
+        Validates inputs locally, then calls Cognito sign_up with email as
+        username and company_name as a custom attribute.
         """
-        raise NotImplementedError("register will be implemented in task 4.2")
+        # Input validation
+        if not email or len(email) > 128:
+            return AuthResult(
+                success=False,
+                error="El email debe tener entre 1 y 128 caracteres",
+            )
+
+        if len(password) < 8 or len(password) > 128:
+            return AuthResult(
+                success=False,
+                error="La contraseña debe tener entre 8 y 128 caracteres",
+            )
+
+        if not company_name or len(company_name) > 255:
+            return AuthResult(
+                success=False,
+                error="El nombre de empresa debe tener entre 1 y 255 caracteres",
+            )
+
+        try:
+            self._client.sign_up(
+                ClientId=self._client_id,
+                Username=email,
+                Password=password,
+                UserAttributes=[
+                    {"Name": "custom:company_name", "Value": company_name},
+                ],
+            )
+            return AuthResult(success=True)
+
+        except self._client.exceptions.UsernameExistsException:
+            return AuthResult(
+                success=False,
+                error="El email ya está registrado",
+            )
+
+        except self._client.exceptions.InvalidPasswordException as exc:
+            message = exc.response.get("Error", {}).get(
+                "Message", "La contraseña no cumple la política de seguridad"
+            )
+            return AuthResult(success=False, error=message)
+
+        except (ClientError, Exception):
+            return AuthResult(
+                success=False,
+                error=self.SERVICE_UNAVAILABLE_ERROR,
+            )
 
     def refresh_token(self, refresh_token: str) -> AuthResult:
         """Refresh access token using Cognito REFRESH_TOKEN_AUTH flow.

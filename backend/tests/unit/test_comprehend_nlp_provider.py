@@ -126,13 +126,35 @@ class TestValidateTextValidInput:
         assert result is None
 
 
-class TestAnalyzeSentimentNotImplemented:
-    """Stub methods raise NotImplementedError."""
+class TestAnalyzeSentimentWithMockedClient:
+    """Verify analyze_sentiment and extract_keywords work with mocked boto3 client."""
 
-    def test_analyze_sentiment_raises(self, provider):
-        with pytest.raises(NotImplementedError):
-            provider.analyze_sentiment("texto de prueba")
+    def test_analyze_sentiment_returns_result(self, provider):
+        """analyze_sentiment returns a SentimentResult when Comprehend responds."""
+        provider._client.detect_sentiment.return_value = {
+            "Sentiment": "POSITIVE",
+            "SentimentScore": {
+                "Positive": 0.9,
+                "Negative": 0.05,
+                "Neutral": 0.04,
+                "Mixed": 0.01,
+            },
+        }
+        from app.core.interfaces.nlp_provider import SentimentResult
 
-    def test_extract_keywords_raises(self, provider):
-        with pytest.raises(NotImplementedError):
-            provider.extract_keywords("texto de prueba")
+        result = provider.analyze_sentiment("texto de prueba")
+        assert isinstance(result, SentimentResult)
+        assert result.sentiment == "positivo"
+        assert result.score == 0.85
+
+    def test_extract_keywords_returns_list(self, provider):
+        """extract_keywords returns a list of lowercase strings."""
+        provider._client.detect_key_phrases.return_value = {
+            "KeyPhrases": [
+                {"Text": "servicio excelente", "Score": 0.99},
+                {"Text": "buen trato", "Score": 0.85},
+                {"Text": "ok", "Score": 0.5},  # <=2 chars, should be filtered
+            ]
+        }
+        result = provider.extract_keywords("texto de prueba")
+        assert result == ["servicio excelente", "buen trato"]
