@@ -58,6 +58,7 @@ class TestPasswordHashingRoundTrip:
 
     @given(password=valid_passwords)
     @settings(
+        max_examples=20,  # bcrypt is intentionally slow; 20 examples is sufficient
         suppress_health_check=[HealthCheck.function_scoped_fixture],
         deadline=None,
     )
@@ -80,6 +81,7 @@ class TestPasswordHashingRoundTrip:
         wrong_password=valid_passwords,
     )
     @settings(
+        max_examples=20,  # bcrypt is intentionally slow; 20 examples is sufficient
         suppress_health_check=[HealthCheck.function_scoped_fixture],
         deadline=None,
     )

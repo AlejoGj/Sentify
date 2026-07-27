@@ -91,14 +91,14 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Return appropriate AuthResult for each case
     - _Requirements: 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8_
 
-  - [ ] 4.3 Implement authenticate method
+  - [x] 4.3 Implement authenticate method
     - Call `cognito.initiate_auth(AuthFlow="USER_PASSWORD_AUTH", ...)`
     - Extract tokens and map "sub" → user_id, "custom:company_name" → company_name, "exp" → expiration
     - Return generic error message on invalid credentials (not revealing which field)
     - Handle account locked/disabled, service unreachable
     - _Requirements: 4.1, 4.2, 4.3, 10.3, 10.5_
 
-  - [ ] 4.4 Implement validate_token with JWKS caching
+  - [x] 4.4 Implement validate_token with JWKS caching
     - Fetch JWKS from Cognito well-known endpoint
     - Cache JWKS keys for up to 24 hours
     - Validate JWT signature (RS256), expiration, and claims
