@@ -105,7 +105,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Return AuthToken on success, None on failure
     - _Requirements: 4.4, 4.5, 10.4_
 
-  - [ ] 4.5 Implement refresh_token method
+  - [x] 4.5 Implement refresh_token method
     - Call `cognito.initiate_auth(AuthFlow="REFRESH_TOKEN_AUTH", ...)`
     - Return updated AuthResult with new AuthToken
     - _Requirements: 4.7_
