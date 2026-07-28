@@ -3,7 +3,7 @@
 import logging
 import math
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -31,7 +31,7 @@ class SQLiteStorageProvider(IStorageProvider):
                 user_id=user_id,
                 filename=filename,
                 status="pending",
-                uploaded_at=datetime.utcnow(),
+                uploaded_at=datetime.now(timezone.utc),
             )
             session.add(batch)
             session.commit()
@@ -53,7 +53,7 @@ class SQLiteStorageProvider(IStorageProvider):
                 return
             batch.status = status
             if status == "completed":
-                batch.completed_at = datetime.utcnow()
+                batch.completed_at = datetime.now(timezone.utc)
             session.commit()
         except Exception as e:
             session.rollback()
@@ -85,7 +85,7 @@ class SQLiteStorageProvider(IStorageProvider):
                 sentiment=sentiment,
                 score=score,
                 status=status,
-                analyzed_at=datetime.utcnow(),
+                analyzed_at=datetime.now(timezone.utc),
             )
             session.add(feedback)
 
@@ -372,7 +372,7 @@ class SQLiteStorageProvider(IStorageProvider):
                 company_name=company_name,
                 failed_attempts=0,
                 locked_until=None,
-                created_at=datetime.utcnow(),
+                created_at=datetime.now(timezone.utc),
             )
             session.add(user)
             session.commit()
@@ -496,7 +496,7 @@ class SQLiteStorageProvider(IStorageProvider):
                 score=None,
                 status="error",
                 error_reason=error_reason,
-                analyzed_at=datetime.utcnow(),
+                analyzed_at=datetime.now(timezone.utc),
             )
             session.add(feedback)
             session.commit()

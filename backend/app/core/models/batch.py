@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import DateTime, ForeignKey, Index, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -34,7 +34,7 @@ class Batch(Base):
     processed_rows: Mapped[int] = mapped_column(Integer, default=0)
     error_rows: Mapped[int] = mapped_column(Integer, default=0)
     uploaded_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow
+        DateTime, default=lambda: datetime.now(timezone.utc)
     )
     completed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 

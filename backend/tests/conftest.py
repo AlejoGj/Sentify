@@ -8,7 +8,7 @@ Provides:
 - Hypothesis profile configuration (min 100 examples)
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Generator
 
 import pytest
@@ -147,7 +147,7 @@ def mock_auth_provider():
 
             # Check lockout
             if user_id in self._locked_until:
-                if datetime.utcnow() < self._locked_until[user_id]:
+                if datetime.now(timezone.utc) < self._locked_until[user_id]:
                     return AuthResult(
                         success=False,
                         error="Cuenta bloqueada temporalmente",
@@ -163,7 +163,7 @@ def mock_auth_provider():
                     success=True,
                     token=AuthToken(
                         token="mock-jwt-token-for-tests",
-                        expires_at=datetime.utcnow() + timedelta(minutes=30),
+                        expires_at=datetime.now(timezone.utc) + timedelta(minutes=30),
                         user_id=user_id,
                         company_name="Empresa Test",
                     ),
@@ -172,7 +172,7 @@ def mock_auth_provider():
                 attempts = self._failed_attempts.get(user_id, 0) + 1
                 self._failed_attempts[user_id] = attempts
                 if attempts >= 5:
-                    self._locked_until[user_id] = datetime.utcnow() + timedelta(
+                    self._locked_until[user_id] = datetime.now(timezone.utc) + timedelta(
                         minutes=15
                     )
                     return AuthResult(
@@ -189,7 +189,7 @@ def mock_auth_provider():
             if token == "mock-jwt-token-for-tests":
                 return AuthToken(
                     token=token,
-                    expires_at=datetime.utcnow() + timedelta(minutes=30),
+                    expires_at=datetime.now(timezone.utc) + timedelta(minutes=30),
                     user_id="user-001",
                     company_name="Empresa Test",
                 )
@@ -233,7 +233,7 @@ def mock_storage_provider():
                 "user_id": user_id,
                 "filename": filename,
                 "status": "pendiente",
-                "created_at": datetime.utcnow(),
+                "created_at": datetime.now(timezone.utc),
                 "total_rows": 0,
                 "processed_count": 0,
                 "error_count": 0,
