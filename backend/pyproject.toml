@@ -27,6 +27,7 @@ dev = [
     "pytest-cov>=4.1.0",
     "hypothesis>=6.92.0",
     "httpx>=0.25.0",
+    "moto[dynamodb]>=5.0.0",
 ]
 
 [tool.setuptools.packages.find]

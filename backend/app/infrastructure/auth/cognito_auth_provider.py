@@ -259,8 +259,48 @@ class CognitoAuthProvider(IAuthProvider):
             )
 
     def refresh_token(self, refresh_token: str) -> AuthResult:
-        """Refresh access token using Cognito REFRESH_TOKEN_AUTH flow.
+        """Refresh access and ID tokens via Cognito REFRESH_TOKEN_AUTH flow.
 
-        Implemented in task 4.5.
+        Calls Cognito with REFRESH_TOKEN_AUTH, extracts new access and ID
+        tokens, and returns an AuthResult with an updated AuthToken containing
+        a new expiration (Requirement 4.7).
+
+        Returns AuthResult(success=False) on invalid/expired refresh token or
+        any service error.
         """
-        raise NotImplementedError("refresh_token will be implemented in task 4.5")
+        try:
+            response = self._client.initiate_auth(
+                AuthFlow="REFRESH_TOKEN_AUTH",
+                AuthParameters={
+                    "REFRESH_TOKEN": refresh_token,
+                },
+                ClientId=self._client_id,
+            )
+
+            auth_result = response["AuthenticationResult"]
+            id_token = auth_result["IdToken"]
+
+            # Decode JWT payload to extract updated claims
+            payload_segment = id_token.split(".")[1]
+            padding = 4 - len(payload_segment) % 4
+            if padding != 4:
+                payload_segment += "=" * padding
+            claims = json.loads(base64.urlsafe_b64decode(payload_segment))
+
+            token = AuthToken(
+                token=auth_result["AccessToken"],
+                expires_at=datetime.fromtimestamp(claims["exp"], tz=timezone.utc),
+                user_id=claims["sub"],
+                company_name=claims.get("custom:company_name", ""),
+            )
+
+            return AuthResult(success=True, token=token)
+
+        except self._client.exceptions.NotAuthorizedException:
+            return AuthResult(success=False, error=self.GENERIC_ERROR)
+
+        except (EndpointConnectionError, ConnectionError):
+            return AuthResult(success=False, error=self.SERVICE_UNAVAILABLE_ERROR)
+
+        except ClientError:
+            return AuthResult(success=False, error=self.SERVICE_UNAVAILABLE_ERROR)

@@ -178,66 +178,6 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
 - [ ] 9. Checkpoint - Ensure backend tests pass end-to-end
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 10. Implement frontend - Auth and Upload components
-  - [ ] 10.1 Set up React project with Vite and dependencies
-    - Initialize frontend project with Vite + React + TypeScript
-    - Install dependencies: react-router-dom, axios, chart.js, react-chartjs-2, react-wordcloud, @testing-library/react
-    - Create `frontend/src/types/` with TypeScript interfaces matching backend schemas
-    - Create `frontend/src/services/api.ts` with Axios instance and interceptors (JWT token, error handling)
-    - _Requirements: 8.4_
-
-  - [ ] 10.2 Implement Auth components
-    - Create `frontend/src/components/Auth/LoginForm.tsx` with email/password form
-    - Handle error states: invalid credentials (generic message), account locked (show lockout message)
-    - Store JWT token in localStorage, display company name on success
-    - Implement route protection (redirect to login if no valid token)
-    - _Requirements: 1.1, 1.2, 1.5, 1.6_
-
-  - [ ] 10.3 Implement CSV Upload component
-    - Create `frontend/src/components/Upload/CSVUploader.tsx` with drag & drop file selection
-    - Implement client-side validation (extension, size preview)
-    - Show upload progress and poll `GET /batches/{id}/status` for processing state
-    - Display specific error messages from backend (format, size, missing column)
-    - _Requirements: 2.1, 2.3, 2.4, 2.6_
-
-- [ ] 11. Implement frontend - Dashboard and visualization
-  - [ ] 11.1 Implement sentiment charts
-    - Create `frontend/src/components/Charts/SentimentCharts.tsx` with Chart.js bar chart and pie chart
-    - Bar chart: sentiment distribution (positivo/neutro/negativo counts)
-    - Pie chart: percentage distribution with hover tooltip showing exact values
-    - Both charts support click events to filter feedbacks by sentiment category
-    - _Requirements: 6.1, 6.2_
-
-  - [ ] 11.2 Implement word cloud and feedback list
-    - Create `frontend/src/components/Charts/WordCloud.tsx` with top 20 keywords, size proportional to frequency
-    - Create `frontend/src/components/Dashboard/FeedbackList.tsx` with paginated list (20 per page)
-    - Implement keyword click → filter feedbacks by that keyword
-    - _Requirements: 6.3, 6.4_
-
-  - [ ] 11.3 Implement Triage panel
-    - Create `frontend/src/components/Triage/TriagePanel.tsx` showing urgent feedbacks (score < -0.7)
-    - Display as accessible tab/panel with badge showing urgent count
-    - Order by score ascending (most negative first), paginate at 10 per page
-    - Show full text, score, and keywords for each urgent feedback
-    - Add red alert indicator next to batch name when urgents exist
-    - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
-
-  - [ ] 11.4 Implement batch history and empty states
-    - Create `frontend/src/components/Dashboard/BatchHistory.tsx` with paginated list ordered by date desc
-    - Create `frontend/src/components/Dashboard/EmptyState.tsx` reusable component
-    - Implement empty states: no feedbacks processed → show message + CTA to upload; no urgent feedbacks → show calm message
-    - Wire navigation: batch selection loads results within 3s target
-    - _Requirements: 5.6, 6.5, 6.6, 7.6_
-
-  - [ ] 11.5 Wire App routing and main layout
-    - Create `frontend/src/App.tsx` with React Router: `/login`, `/dashboard`, `/upload`
-    - Implement main layout with navigation bar showing triage badge
-    - Connect all components with API service layer
-    - _Requirements: 6.1, 7.2_
-
-- [ ] 12. Final checkpoint - Ensure all tests pass
-  - Ensure all tests pass, ask the user if questions arise.
-
 ## Notes
 
 - Tasks marked with `*` are optional and can be skipped for faster MVP
@@ -261,10 +201,7 @@ Implementación de la plataforma Sentify siguiendo la arquitectura de capas desa
     { "id": 4, "tasks": ["2.3", "2.4", "2.5", "2.6", "2.7", "6.1"] },
     { "id": 5, "tasks": ["6.2", "6.3", "6.4", "6.5", "7.1"] },
     { "id": 6, "tasks": ["7.2", "8.1", "8.2", "8.3"] },
-    { "id": 7, "tasks": ["8.4", "10.1"] },
-    { "id": 8, "tasks": ["10.2", "10.3"] },
-    { "id": 9, "tasks": ["11.1", "11.2", "11.3", "11.4"] },
-    { "id": 10, "tasks": ["11.5"] }
+    { "id": 7, "tasks": ["8.4"] }
   ]
 }
 ```
