@@ -204,7 +204,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - **Validates: Requirements 6.12, 7.1**
     - Verify completed_at is set only when status is "completed"
 
-- [ ] 7. Checkpoint - Ensure all tests pass
+- [x] 7. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 8. Implement Lambda handler and API Gateway integration
@@ -227,21 +227,21 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Log full stack traces via Python logging (for CloudWatch)
     - _Requirements: 5.7, 5.8, 5.9_
 
-  - [ ]* 8.4 Write integration tests for Lambda handler
+  - [x]* 8.4 Write integration tests for Lambda handler
     - Test all routes via Mangum with mocked AWS services (moto)
     - Test auth middleware behavior, CORS headers, error responses
     - Test multipart file upload handling
     - _Requirements: 5.1, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.10_
 
-- [ ] 9. Implement data migration script
-  - [ ] 9.1 Create SQLite to DynamoDB migration script
+- [x] 9. Implement data migration script
+  - [x] 9.1 Create SQLite to DynamoDB migration script
     - Create file `backend/scripts/migrate_sqlite_to_dynamodb.py`
     - Read all users, batches, feedbacks, and keywords from SQLite
     - Transform each record into DynamoDB single-table schema format (PK/SK patterns)
     - Preserve all field values including null fields
     - _Requirements: 9.1, 9.2_
 
-  - [ ] 9.2 Implement batch write with retry and reporting
+  - [x] 9.2 Implement batch write with retry and reporting
     - Write in batches of 25 items using `batch_write_item`
     - Exponential backoff on throttled requests up to 5 retries per batch
     - Log failed records (entity type + record ID) and continue processing
@@ -249,18 +249,18 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Compare DynamoDB counts vs SQLite source counts and report discrepancies
     - _Requirements: 9.3, 9.4, 9.5, 9.6_
 
-  - [ ]* 9.3 Write property tests for migration data transformation
+  - [x]* 9.3 Write property tests for migration data transformation
     - **Property 16: Migration record transformation preserves data**
     - **Validates: Requirements 9.2**
     - Generate sample records, verify PK/SK patterns and field preservation
 
-  - [ ]* 9.4 Write integration tests for migration script
+  - [x]* 9.4 Write integration tests for migration script
     - Test full migration flow with moto (mock DynamoDB and real SQLite)
     - Verify summary report accuracy
     - Test retry behavior on throttled writes
     - _Requirements: 9.3, 9.4, 9.5, 9.6_
 
-- [ ] 10. Final checkpoint - Ensure all tests pass
+- [x] 10. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
