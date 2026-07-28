@@ -128,7 +128,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
 - [x] 5. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. Implement DynamoDBStorageProvider
+- [x] 6. Implement DynamoDBStorageProvider
   - [x] 6.1 Create DynamoDBStorageProvider class implementing IStorageProvider
     - Create file `backend/app/infrastructure/storage/dynamodb_storage_provider.py`
     - Initialize boto3 DynamoDB resource with table name and region
@@ -164,7 +164,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - `get_feedbacks_by_keyword`: Query GSI2 with PK=`BATCH#{batch_id}#KW#{word}`
     - _Requirements: 6.6_
 
-  - [-] 6.6 Implement batch write operations with retry logic
+  - [x] 6.6 Implement batch write operations with retry logic
     - Use DynamoDB `batch_write_item` with chunks of 25 items
     - Retry unprocessed items with exponential backoff up to 3 attempts
     - _Requirements: 7.5_
@@ -204,24 +204,24 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - **Validates: Requirements 6.12, 7.1**
     - Verify completed_at is set only when status is "completed"
 
-- [~] 7. Checkpoint - Ensure all tests pass
+- [ ] 7. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 8. Implement Lambda handler and API Gateway integration
-  - [~] 8.1 Create Lambda handler entry point
+  - [x] 8.1 Create Lambda handler entry point
     - Create file `backend/lambda_handler.py` at project root
     - Install and import Mangum adapter
     - Create handler: `handler = Mangum(app, lifespan="off")`
     - Ensure all existing routes are preserved under /api/v1/ prefix
     - _Requirements: 5.1, 5.2, 5.3_
 
-  - [~] 8.2 Configure authentication middleware for Lambda context
+  - [x] 8.2 Configure authentication middleware for Lambda context
     - Verify JWT validation from Authorization header in "Bearer {token}" format works via Cognito_Provider
     - Return HTTP 401 with WWW-Authenticate: Bearer header for invalid/missing tokens on protected endpoints
     - Public endpoints (POST /login, POST /register) bypass auth
     - _Requirements: 5.4, 5.5_
 
-  - [~] 8.3 Configure CORS and error handling for API Gateway
+  - [ ] 8.3 Configure CORS and error handling for API Gateway
     - Set CORS: allowed origin from env var, methods GET/POST, headers Content-Type/Authorization, credentials enabled
     - Unhandled exceptions return HTTP 500 with generic message
     - Log full stack traces via Python logging (for CloudWatch)
@@ -234,14 +234,14 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - _Requirements: 5.1, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.10_
 
 - [ ] 9. Implement data migration script
-  - [~] 9.1 Create SQLite to DynamoDB migration script
+  - [ ] 9.1 Create SQLite to DynamoDB migration script
     - Create file `backend/scripts/migrate_sqlite_to_dynamodb.py`
     - Read all users, batches, feedbacks, and keywords from SQLite
     - Transform each record into DynamoDB single-table schema format (PK/SK patterns)
     - Preserve all field values including null fields
     - _Requirements: 9.1, 9.2_
 
-  - [~] 9.2 Implement batch write with retry and reporting
+  - [ ] 9.2 Implement batch write with retry and reporting
     - Write in batches of 25 items using `batch_write_item`
     - Exponential backoff on throttled requests up to 5 retries per batch
     - Log failed records (entity type + record ID) and continue processing
@@ -260,7 +260,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Test retry behavior on throttled writes
     - _Requirements: 9.3, 9.4, 9.5, 9.6_
 
-- [~] 10. Final checkpoint - Ensure all tests pass
+- [ ] 10. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
