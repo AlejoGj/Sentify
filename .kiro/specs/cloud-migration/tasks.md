@@ -55,18 +55,18 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Raise exception on AWS service errors
     - _Requirements: 1.7, 1.8, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6_
 
-  - [ ]* 2.4 Write property tests for sentiment score computation
+  - [x]* 2.4 Write property tests for sentiment score computation
     - **Property 1: Sentiment score computation and classification consistency**
     - **Validates: Requirements 1.3, 1.4, 1.5, 1.6**
     - Use Hypothesis to generate Positive/Negative floats in [0,1]
     - Verify score formula and classification thresholds
 
-  - [ ]* 2.5 Write property tests for keyword extraction invariants
+  - [x]* 2.5 Write property tests for keyword extraction invariants
     - **Property 2: Keyword extraction invariants**
     - **Validates: Requirements 1.7, 1.8, 2.1, 2.2, 2.3**
     - Verify filtering, ordering, lowercase normalization, and max_keywords clamping
 
-  - [ ]* 2.6 Write property tests for text validation
+  - [x]* 2.6 Write property tests for text validation
     - **Property 3: Empty/whitespace input validation**
     - **Property 4: Insufficient significant words validation**
     - **Property 5: Oversized text rejection**
@@ -76,7 +76,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
 - [x] 3. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 4. Implement CognitoAuthProvider
+- [x] 4. Implement CognitoAuthProvider
   - [x] 4.1 Create CognitoAuthProvider class implementing IAuthProvider
     - Create file `backend/app/infrastructure/auth/cognito_auth_provider.py`
     - Initialize boto3 cognito-idp client with configurable region, user_pool_id, client_id
@@ -110,33 +110,33 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Return updated AuthResult with new AuthToken
     - _Requirements: 4.7_
 
-  - [ ]* 4.6 Write property tests for Cognito token claim mapping
+  - [x]* 4.6 Write property tests for Cognito token claim mapping
     - **Property 6: Cognito token claim mapping**
     - **Validates: Requirements 4.1, 4.4**
     - Generate JWT payloads with Hypothesis, verify AuthToken field mapping
 
-  - [ ]* 4.7 Write property tests for token validation rejection
+  - [x]* 4.7 Write property tests for token validation rejection
     - **Property 7: Token validation rejects invalid tokens**
     - **Validates: Requirements 4.5**
     - Generate expired/invalid JWTs, verify None return
 
-  - [ ]* 4.8 Write property tests for no-op password methods
+  - [x]* 4.8 Write property tests for no-op password methods
     - **Property 8: Cognito no-op password methods**
     - **Validates: Requirements 10.1, 10.2**
     - Generate arbitrary strings, verify hash_password returns "" and verify_password returns False
 
-- [ ] 5. Checkpoint - Ensure all tests pass
+- [x] 5. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 6. Implement DynamoDBStorageProvider
-  - [ ] 6.1 Create DynamoDBStorageProvider class implementing IStorageProvider
+  - [x] 6.1 Create DynamoDBStorageProvider class implementing IStorageProvider
     - Create file `backend/app/infrastructure/storage/dynamodb_storage_provider.py`
     - Initialize boto3 DynamoDB resource with table name and region
     - Define single-table key schema constants (PK/SK patterns for User, Batch, Feedback, Keyword)
     - Implement UUID v4 generation for all IDs
     - _Requirements: 6.1, 6.2, 6.10_
 
-  - [ ] 6.2 Implement user operations (create_user, get_user_by_email)
+  - [x] 6.2 Implement user operations (create_user, get_user_by_email)
     - `create_user`: Store with PK=`USER#{email}`, SK=`USER#{email}`, plus USERID pointer item
     - Initialize failed_attempts=0, locked_until=None, created_at as UTC ISO-8601
     - Use conditional put to prevent duplicate emails
@@ -144,14 +144,14 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Implement `increment_failed_attempts`, `reset_failed_attempts`, `lock_account`
     - _Requirements: 6.8, 6.9, 6.11_
 
-  - [ ] 6.3 Implement batch operations (create_batch, update_batch_status, update_batch_counts, get_user_batches)
+  - [x] 6.3 Implement batch operations (create_batch, update_batch_status, update_batch_counts, get_user_batches)
     - `create_batch`: Store with PK=`USER#{user_id}`, SK=`BATCH#{batch_id}`, status="pending", uploaded_at UTC ISO-8601
     - `update_batch_status`: Update status, set completed_at when status is "completed"
     - `update_batch_counts`: Use atomic ADD expressions for total_rows, processed_rows, error_rows
     - `get_user_batches`: Query PK with SK begins_with "BATCH#", paginate, order by uploaded_at descending
     - _Requirements: 6.3, 6.12, 7.1, 7.2, 7.3_
 
-  - [ ] 6.4 Implement feedback operations (store_feedback, store_feedback_error, get_batch_feedbacks, get_urgent_feedbacks)
+  - [x] 6.4 Implement feedback operations (store_feedback, store_feedback_error, get_batch_feedbacks, get_urgent_feedbacks)
     - `store_feedback`: Store with PK=`BATCH#{batch_id}`, SK=`FEEDBACK#{feedback_id}`, truncate original_text to 5000 chars
     - `store_feedback_error`: Store with status "error" and error_reason
     - Write keyword index items (PK=`BATCH#{batch_id}`, SK=`KW#{word}#FEEDBACK#{feedback_id}`)
@@ -159,69 +159,69 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - `get_urgent_feedbacks`: Query GSI1, filter score < threshold and status="success", order by score ascending
     - _Requirements: 6.4, 6.5, 6.7, 7.4_
 
-  - [ ] 6.5 Implement keyword operations (get_top_keywords, get_feedbacks_by_keyword)
+  - [x] 6.5 Implement keyword operations (get_top_keywords, get_feedbacks_by_keyword)
     - `get_top_keywords`: Query PK=`BATCH#{batch_id}`, SK begins_with `KW#`, aggregate frequencies in-memory, sort descending
     - `get_feedbacks_by_keyword`: Query GSI2 with PK=`BATCH#{batch_id}#KW#{word}`
     - _Requirements: 6.6_
 
-  - [ ] 6.6 Implement batch write operations with retry logic
+  - [-] 6.6 Implement batch write operations with retry logic
     - Use DynamoDB `batch_write_item` with chunks of 25 items
     - Retry unprocessed items with exponential backoff up to 3 attempts
     - _Requirements: 7.5_
 
-  - [ ]* 6.7 Write property tests for feedback text truncation
+  - [x]* 6.7 Write property tests for feedback text truncation
     - **Property 9: Feedback text truncation invariant**
     - **Validates: Requirements 6.4, 7.4**
     - Generate texts of varying length, verify stored text is at most 5000 chars
 
-  - [ ]* 6.8 Write property tests for batch creation
+  - [x]* 6.8 Write property tests for batch creation
     - **Property 10: Batch creation produces valid structure**
     - **Validates: Requirements 6.3, 6.10**
     - Verify UUID v4 format, status "pending", and ISO-8601 timestamp
 
-  - [ ]* 6.9 Write property tests for pagination math
+  - [x]* 6.9 Write property tests for pagination math
     - **Property 11: Pagination math invariant**
     - **Validates: Requirements 6.5, 6.7, 7.3**
     - Generate item counts and page sizes, verify total_pages calculation
 
-  - [ ]* 6.10 Write property tests for keyword frequency aggregation
+  - [x]* 6.10 Write property tests for keyword frequency aggregation
     - **Property 12: Keyword frequency aggregation correctness**
     - **Validates: Requirements 6.6**
     - Generate feedback sets with keyword lists, verify frequency counts
 
-  - [ ]* 6.11 Write property tests for urgent feedback filtering
+  - [x]* 6.11 Write property tests for urgent feedback filtering
     - **Property 13: Urgent feedback filtering and ordering**
     - **Validates: Requirements 6.7**
     - Generate feedbacks with various scores, verify threshold filtering and ordering
 
-  - [ ]* 6.12 Write property tests for user round-trip persistence
+  - [x]* 6.12 Write property tests for user round-trip persistence
     - **Property 14: User round-trip persistence**
     - **Validates: Requirements 6.8, 6.9**
     - Create user then retrieve, verify all fields match
 
-  - [ ]* 6.13 Write property tests for batch status update
+  - [x]* 6.13 Write property tests for batch status update
     - **Property 15: Batch status update with completed_at**
     - **Validates: Requirements 6.12, 7.1**
     - Verify completed_at is set only when status is "completed"
 
-- [ ] 7. Checkpoint - Ensure all tests pass
+- [~] 7. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 8. Implement Lambda handler and API Gateway integration
-  - [ ] 8.1 Create Lambda handler entry point
+  - [~] 8.1 Create Lambda handler entry point
     - Create file `backend/lambda_handler.py` at project root
     - Install and import Mangum adapter
     - Create handler: `handler = Mangum(app, lifespan="off")`
     - Ensure all existing routes are preserved under /api/v1/ prefix
     - _Requirements: 5.1, 5.2, 5.3_
 
-  - [ ] 8.2 Configure authentication middleware for Lambda context
+  - [~] 8.2 Configure authentication middleware for Lambda context
     - Verify JWT validation from Authorization header in "Bearer {token}" format works via Cognito_Provider
     - Return HTTP 401 with WWW-Authenticate: Bearer header for invalid/missing tokens on protected endpoints
     - Public endpoints (POST /login, POST /register) bypass auth
     - _Requirements: 5.4, 5.5_
 
-  - [ ] 8.3 Configure CORS and error handling for API Gateway
+  - [~] 8.3 Configure CORS and error handling for API Gateway
     - Set CORS: allowed origin from env var, methods GET/POST, headers Content-Type/Authorization, credentials enabled
     - Unhandled exceptions return HTTP 500 with generic message
     - Log full stack traces via Python logging (for CloudWatch)
@@ -234,14 +234,14 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - _Requirements: 5.1, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.10_
 
 - [ ] 9. Implement data migration script
-  - [ ] 9.1 Create SQLite to DynamoDB migration script
+  - [~] 9.1 Create SQLite to DynamoDB migration script
     - Create file `backend/scripts/migrate_sqlite_to_dynamodb.py`
     - Read all users, batches, feedbacks, and keywords from SQLite
     - Transform each record into DynamoDB single-table schema format (PK/SK patterns)
     - Preserve all field values including null fields
     - _Requirements: 9.1, 9.2_
 
-  - [ ] 9.2 Implement batch write with retry and reporting
+  - [~] 9.2 Implement batch write with retry and reporting
     - Write in batches of 25 items using `batch_write_item`
     - Exponential backoff on throttled requests up to 5 retries per batch
     - Log failed records (entity type + record ID) and continue processing
@@ -260,7 +260,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Test retry behavior on throttled writes
     - _Requirements: 9.3, 9.4, 9.5, 9.6_
 
-- [ ] 10. Final checkpoint - Ensure all tests pass
+- [~] 10. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
