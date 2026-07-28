@@ -207,7 +207,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
 - [ ] 7. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 8. Implement Lambda handler and API Gateway integration
+- [x] 8. Implement Lambda handler and API Gateway integration
   - [x] 8.1 Create Lambda handler entry point
     - Create file `backend/lambda_handler.py` at project root
     - Install and import Mangum adapter
@@ -221,7 +221,7 @@ Migrate Sentify's backend infrastructure from local/self-hosted components to AW
     - Public endpoints (POST /login, POST /register) bypass auth
     - _Requirements: 5.4, 5.5_
 
-  - [ ] 8.3 Configure CORS and error handling for API Gateway
+  - [x] 8.3 Configure CORS and error handling for API Gateway
     - Set CORS: allowed origin from env var, methods GET/POST, headers Content-Type/Authorization, credentials enabled
     - Unhandled exceptions return HTTP 500 with generic message
     - Log full stack traces via Python logging (for CloudWatch)

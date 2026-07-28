@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     max_file_size_mb: int = 10
     max_csv_rows: int = 50000
 
+    # CORS
+    cors_allowed_origin: str = "*"  # set SENTIFY_CORS_ALLOWED_ORIGIN in production
+
     # Cloud migration - provider switching
     use_local_providers: bool = True
 
