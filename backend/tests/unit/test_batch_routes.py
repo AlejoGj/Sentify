@@ -11,7 +11,7 @@ Tests:
 
 import io
 import math
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from fastapi.testclient import TestClient
@@ -32,7 +32,7 @@ def mock_user_token() -> AuthToken:
     """Return a mock AuthToken for the authenticated user."""
     return AuthToken(
         token="mock-jwt-token-for-tests",
-        expires_at=datetime.utcnow() + timedelta(minutes=30),
+        expires_at=datetime.now(timezone.utc) + timedelta(minutes=30),
         user_id="user-001",
         company_name="Empresa Test",
     )

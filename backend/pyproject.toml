@@ -43,6 +43,11 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning:pytest_asyncio",
+    "ignore::DeprecationWarning:starlette",
+    "ignore::starlette.testclient.StarletteDeprecationWarning",
+]
 
 # ---------------------------------------------------------------------------
 # Hypothesis configuration (min 100 examples per property)
