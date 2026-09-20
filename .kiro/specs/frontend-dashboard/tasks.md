@@ -16,29 +16,29 @@ Implementación incremental de la SPA React + TypeScript + Vite del Dashboard de
   - Crear `.env.example` con `VITE_API_BASE_URL=http://localhost:8000` como valor de ejemplo
   - _Requirements: 14.1, 14.2_
 
-- [ ] 2. Definición de interfaces TypeScript
-  - [ ] 2.1 Crear `src/types/index.ts` con todas las interfaces del dominio
+- [x] 2. Definición de interfaces TypeScript
+  - [x] 2.1 Crear `src/types/index.ts` con todas las interfaces del dominio
     - Exportar: `LoginResponse`, `BatchStatus`, `BatchSummary`, `FeedbackItem`, `KeywordItem`, `PaginatedResponse<T>`, `BatchListItem`, `AuthState`, `AuthContextValue`, `DashboardFilters`
     - Incluir la unión `SentimentType = 'positivo' | 'neutro' | 'negativo'`
     - Incluir las interfaces de props de componentes: `EmptyStateProps`, `BatchRowProps`, `CSVUploaderProps`, `SummaryCardsProps`, `FeedbackListProps`, `TriagePanelProps`, `SentimentChartProps`, `KeywordCloudProps`
     - _Requirements: 14.3_
 
-- [ ] 3. Funciones puras utilitarias y sus property-based tests
-  - [ ] 3.1 Crear `src/utils/validators.ts` con las funciones puras
+- [x] 3. Funciones puras utilitarias y sus property-based tests
+  - [x] 3.1 Crear `src/utils/validators.ts` con las funciones puras
     - Implementar `isTokenExpired(token: string): boolean` — decodifica el payload Base64 del JWT sin verificar firma y compara el campo `exp` con `Date.now() / 1000`
     - Implementar `validateFileBeforeUpload(file: { name: string; size: number }): { valid: boolean; error?: string }` — rechaza extensión no `.csv` o tamaño mayor a 10 485 760 bytes
     - Implementar `validateLoginForm(email: string, password: string): Record<string, string>` — email inválido o password con menos de 8 chars produce errores
     - Implementar `validateRegisterForm(email: string, password: string, companyName: string): Record<string, string>` — igual que login más companyName vacío
     - _Requirements: 1.5, 1.6, 2.5, 4.2, 4.3_
 
-  - [ ]* 3.2 Escribir property test — Property 1: JWT expirado siempre detectado
+  - [x]* 3.2 Escribir property test — Property 1: JWT expirado siempre detectado
     - **Property 1: Las rutas protegidas redirigen a /login sin token válido**
     - Generar con `fc.integer({ max: Math.floor(Date.now() / 1000) - 1 })` un timestamp `exp` en el pasado, construir un JWT con ese payload y verificar que `isTokenExpired` retorna `true`
     - Generar con `fc.integer({ min: Math.floor(Date.now() / 1000) + 3600 })` un timestamp en el futuro y verificar que retorna `false`
     - Usar `fc.assert` con `numRuns: 100`
     - **Validates: Requirements 1.5, 1.6, 11.3**
 
-  - [ ]* 3.3 Escribir property test — Property 2: Validación de archivo rechaza entradas inválidas
+  - [x]* 3.3 Escribir property test — Property 2: Validación de archivo rechaza entradas inválidas
     - **Property 2: La validación de archivo rechaza cualquier archivo inválido**
     - Generar nombres sin extensión `.csv` con tamaño arbitrario y verificar que `valid === false`
     - Generar nombres `.csv` con `size > 10_485_760` y verificar que `valid === false`
@@ -46,7 +46,7 @@ Implementación incremental de la SPA React + TypeScript + Vite del Dashboard de
     - Usar `fc.assert` con `numRuns: 100`
     - **Validates: Requirements 4.2, 4.3**
 
-  - [ ]* 3.4 Escribir property test — Property 9: Validación de formulario rechaza entradas inválidas
+  - [x]* 3.4 Escribir property test — Property 9: Validación de formulario rechaza entradas inválidas
     - **Property 9: La validación de formulario rechaza cualquier entrada inválida**
     - Generar emails sin `@` o vacíos, passwords con `maxLength: 7` y verificar que `Object.keys(errors).length > 0`
     - Generar `companyName` vacío en `validateRegisterForm` y verificar que produce al menos un error
