@@ -55,7 +55,7 @@ Implementación incremental de la SPA React + TypeScript + Vite del Dashboard de
     - **Validates: Requirements 1, 2.5**
 
 - [ ] 4. Capa de servicios HTTP (`api.ts`)
-  - [ ] 4.1 Crear `src/services/api.ts` con la instancia Axios y los interceptores
+  - [x] 4.1 Crear `src/services/api.ts` con la instancia Axios y los interceptores
     - Inicializar instancia con `baseURL: import.meta.env.VITE_API_BASE_URL`
     - Interceptor de request: leer `token` de `localStorage` y adjuntar `Authorization: Bearer {token}` si existe
     - Interceptor de response: manejar 401 (limpiar localStorage y redirigir a `/login`), 500 (toast genérico), error de red sin `response` (toast de conexión)
