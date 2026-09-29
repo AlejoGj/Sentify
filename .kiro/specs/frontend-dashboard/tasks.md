@@ -54,7 +54,7 @@ Implementación incremental de la SPA React + TypeScript + Vite del Dashboard de
     - Usar `fc.assert` con `numRuns: 100`
     - **Validates: Requirements 1, 2.5**
 
-- [ ] 4. Capa de servicios HTTP (`api.ts`)
+- [x] 4. Capa de servicios HTTP (`api.ts`)
   - [x] 4.1 Crear `src/services/api.ts` con la instancia Axios y los interceptores
     - Inicializar instancia con `baseURL: import.meta.env.VITE_API_BASE_URL`
     - Interceptor de request: leer `token` de `localStorage` y adjuntar `Authorization: Bearer {token}` si existe
@@ -62,7 +62,7 @@ Implementación incremental de la SPA React + TypeScript + Vite del Dashboard de
     - Exportar función `showToast(message: string)` como utilidad ligera de notificaciones
     - _Requirements: 3.1, 3.2, 3.3, 3.6_
 
-  - [ ] 4.2 Agregar funciones tipadas por endpoint en `api.ts`
+  - [x] 4.2 Agregar funciones tipadas por endpoint en `api.ts`
     - `loginUser(email, password): Promise<LoginResponse>`
     - `registerUser(email, password, companyName): Promise<void>`
     - `uploadCSV(file: File): Promise<{ batch_id: string }>`
