@@ -75,7 +75,7 @@ Implementación incremental de la SPA React + TypeScript + Vite del Dashboard de
     - _Requirements: 3.1, 3.2, 4.4, 5.1, 6.1, 7.1, 8.1, 9.1, 10.2_
 
 - [ ] 5. AuthContext, useAuth y ProtectedRoute
-  - [ ] 5.1 Crear `src/context/AuthContext.tsx`
+  - [x] 5.1 Crear `src/context/AuthContext.tsx`
     - Implementar `AuthReducer` con acciones `LOGIN` y `LOGOUT`
     - `login(token, expiresAt, companyName)` escribe en `localStorage` y despacha `LOGIN`
     - `logout()` limpia `localStorage` y despacha `LOGOUT`
