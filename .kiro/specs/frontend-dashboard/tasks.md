@@ -83,7 +83,7 @@ Implementación incremental de la SPA React + TypeScript + Vite del Dashboard de
     - Leer estado inicial desde `localStorage` al montar el provider para persistir sesión entre recargas
     - _Requirements: 1.1, 1.2, 1.8, 11.2_
 
-  - [ ] 5.2 Crear `src/hooks/useAuth.ts`
+  - [x] 5.2 Crear `src/hooks/useAuth.ts`
     - Consumir `AuthContext` y exponer `{ token, companyName, expiresAt, login, logout, isAuthenticated }`
     - Lanzar error si se usa fuera del provider
     - _Requirements: 1.2_
